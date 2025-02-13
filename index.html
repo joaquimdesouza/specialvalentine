@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background 1s ease-in-out;
+            color: red;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        #yes, #no {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: font-size 0.3s ease;
+        }
+        #no {
+            background-color: red;
+        }
+        .cats {
+            margin-top: 20px;
+        }
+        img {
+            width: 100%;  /* Ensures images are responsive */
+            max-width: 500px;  /* Limits max width for large screens */
+            height: 300px;  /* Sets a fixed height for all images */
+            object-fit: contain;  /* Ensures the entire image is visible without cropping */
+            margin: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @keyframes hearts {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        .heart {
+            position: absolute;
+            color: pink;
+            font-size: 30px;
+            animation: hearts 2s linear infinite;
+        }
+        .jumping-cat {
+            position: absolute;
+            bottom: 10px;
+            width: 200px;
+            animation: jump 1s infinite alternate ease-in-out;
+        }
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+        .finalCatContainer {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .finalCat {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .finalText {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 600px) {
+            #yes, #no {
+                font-size: 18px;
+                padding: 8px 16px;
+            }
+            .cats {
+                margin-top: 10px;
+            }
+            .heart {
+                font-size: 25px;
+            }
+            .jumping-cat {
+                width: 150px;
+            }
+            .finalText {
+                font-size: 20px;
+            }
+        }
+
+        @media (min-width: 601px) {
+            #yes, #no {
+                font-size: 20px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="celebration" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh;">
+            <img id="AskCat" src="flower-for-you-cat.gif" style="margin-bottom: 20px;">
+            <img id="celebrationCat" src="CatYayGif.gif" style="display: none; margin-bottom: 20px;">
+            <h1 id="valentineText">Will you be my Valentine?</h1>
+        </div>
+        <button id="yes" onclick="startLoveLoop()">Yes</button>
+        <button id="no" onclick="rejectLove()">No</button>
+        <div class="cats" id="catContainer"></div>
+    </div>
+
+    <script>
+        let yesButton = document.getElementById("yes");
+        let noButton = document.getElementById("no");
+        let catContainer = document.getElementById("catContainer");
+        let valentineText = document.getElementById("valentineText");
+
+        // Array of local cat image filenames
+        const catImages = [
+            "CatGif2-3.gif", 
+            "CatGif1.gif",
+            "CatGif2-2.gif",
+            "CatGif3-1.gif",
+            "CatGif3last.gif"
+        ];
+
+        let currentImageIndex = 0;
+        document.body.style.background = "pink";
+        
+        function startLoveLoop() {
+            document.getElementById("valentineText").innerText = "Yayyy, Love you soo much!!";
+            document.getElementById("AskCat").style.display = "none";
+            document.getElementById("celebrationCat").style.display = "block";
+            document.body.style.background = "pink";
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.className = "heart";
+                heart.style.left = Math.random() * 100 + "%";
+                heart.style.top = Math.random() * 100 + "%";
+                heart.innerHTML = "❤️";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }, 500);
+            
+            noButton.disabled = true; // Disable the button after the last image
+
+            // Hide everything else
+            document.getElementById("yes").style.display = "none";
+            document.getElementById("no").style.display = "none";
+            document.getElementById("AskCat").style.display = "none";
+            catContainer.style.display = "none";
+        }
+
+        function rejectLove() {
+            document.getElementById("AskCat").style.display = "none";
+            // If there are still images left in the list
+            if (currentImageIndex < catImages.length) {
+                // Replace the original image with the next one from the list
+                document.getElementById("celebrationCat").src = catImages[currentImageIndex];
+                document.getElementById("celebrationCat").style.display = "block";  // Show the image
+                currentImageIndex++; // Move to the next image
+            }
+
+            // Update the "No" button text based on the number of presses
+            switch (currentImageIndex) {
+                case 1:
+                    valentineText.innerText = "But I love youuu, say yesss.";
+                    break;
+                case 2:
+                    valentineText.innerText = "Ok fineee I'll carry on valorant if you say yes!";
+                    break;
+                case 3:
+                    valentineText.innerText = "Horesh8 pleaseeee, I'll be omen and you can be sage!";
+                    break;
+                case 4:
+                    valentineText.innerText = "Think about all the valorant games we could playyyy!";
+                    break;
+                case 5:
+                    valentineText.innerText = "Ok, This calls for a 1 vs 1 valorant match. I'm taking you home!";
+
+                    noButton.disabled = true; // Disable the button after the last image
+
+                    // Hide everything else
+                    document.getElementById("yes").style.display = "none";
+                    document.getElementById("no").style.display = "none";
+                    document.getElementById("AskCat").style.display = "none";
+                    catContainer.style.display = "none";
+
+                    // Display hearts like the "Yes" response
+                    setInterval(() => {
+                        let heart = document.createElement("div");
+                        heart.className = "heart";
+                        heart.style.left = Math.random() * 100 + "%";
+                        heart.style.top = Math.random() * 100 + "%";
+                        heart.innerHTML = "❤️";
+                        document.body.appendChild(heart);
+                        setTimeout(() => heart.remove(), 2000);
+                    }, 500);
+                    break;
+            }
+            
+            // Increase the size of the "Yes" button every time "No" is pressed
+            let currentSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+            yesButton.style.fontSize = (currentSize + 15) + "px";  // Increase font size by 5px
+        }
+    </script>
+</body>
+</html>
